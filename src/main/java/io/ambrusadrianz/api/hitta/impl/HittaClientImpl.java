@@ -11,7 +11,6 @@ import io.vertx.reactivex.ext.web.client.WebClient;
 
 public class HittaClientImpl implements HittaClient {
 
-
     private static final String SEARCH_PERSON_COMPANY = "/publicsearch/v1/";
 
     private final WebClient webClient;

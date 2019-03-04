@@ -1,11 +1,9 @@
 package io.ambrusadrianz;
 
-import io.ambrusadrianz.api.hitta.impl.HittaClientImpl;
-import io.ambrusadrianz.api.hitta.impl.HittaHeaderFactory;
-import io.ambrusadrianz.api.hitta.impl.HittaProperties;
-import io.ambrusadrianz.api.hitta.model.request.ImmutableSearchRequest;
-import io.ambrusadrianz.api.hitta.model.request.SearchRequest;
-import io.ambrusadrianz.api.hitta.model.request.SearchType;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import io.ambrusadrianz.application.ApplicationProperties;
+import io.ambrusadrianz.application.ApplicationPropertiesFactory;
+import io.vertx.ext.web.client.WebClientOptions;
 import io.vertx.reactivex.core.Vertx;
 import io.vertx.reactivex.ext.web.client.WebClient;
 
@@ -13,33 +11,35 @@ public class Main {
     public static void main(String[] args) {
         Vertx vertx = Vertx.vertx();
 
-        WebClient webClient = WebClient.create(vertx);
+        WebClient webClient = WebClient.create(vertx, new WebClientOptions().setKeepAlive(true));
 
-        var hittaProperties = new HittaProperties() {
-            @Override
-            public String getCallerId() {
-                return "ambrusadrianz";
-            }
+        YAMLMapper yamlMapper = new YAMLMapper();
+        ApplicationPropertiesFactory applicationPropertiesFactory = new ApplicationPropertiesFactory(yamlMapper);
+        ApplicationProperties properties = applicationPropertiesFactory.getApplicationProperties();
 
-            @Override
-            public String getApiKey() {
-                return "p5MEZUjJJrAPNKGYUBxz9Wk1uAwGSCBBFInKzlIE";
-            }
-        };
+//        HittaHeaderFactory hittaHeaderFactory = new HittaHeaderFactory(properties.getHitta());
+//        HittaClientImpl hittaClient = new HittaClientImpl(webClient, hittaHeaderFactory);
+//
+//        SearchRequest searchRequest = ImmutableSearchRequest.builder()
+//                .searchType(SearchType.COMPANIES)
+//                .what("Voyage")
+//                .where("Nyköping")
+//                .pageNumber(1L)
+//                .pageSize(10)
+//                .build();
+//        hittaClient.search(searchRequest).subscribe(System.out::println);
 
-        HittaHeaderFactory hittaHeaderFactory = new HittaHeaderFactory(hittaProperties);
-        HittaClientImpl hittaClient = new HittaClientImpl(webClient, hittaHeaderFactory);
-
-        SearchRequest searchRequest = ImmutableSearchRequest.builder()
-                .searchType(SearchType.COMPANIES)
-                .what("Voyage")
-                .where("Nyköping")
-                .pageNumber(1L)
-                .pageSize(10)
-                .build();
-        hittaClient.search(searchRequest)
-                .subscribe(response -> {
-                    System.out.println(response);
-                });
+//        BookatableClientImpl bookatableClient = new BookatableClientImpl(webClient, properties.getBookatable());
+//
+//        Flowable.fromIterable(properties.getCitiesToScan())
+//                .map(city -> ImmutableCitySearchRequest.builder().limit(1).query(city).build())
+//                .flatMap(bookatableClient::searchCities)
+//                .map(response -> ImmutableRestaurantListingRequest.builder()
+//                        .city(response.getName())
+//                        .country(response.getCountry())
+//                        .build())
+//                .concatMap(bookatableClient::fetchRestaurantsDetailed)
+//                .limit(1000)
+//                .forEach(System.out::println);
     }
 }
