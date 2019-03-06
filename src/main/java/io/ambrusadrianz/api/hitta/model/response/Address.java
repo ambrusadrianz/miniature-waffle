@@ -1,5 +1,6 @@
 package io.ambrusadrianz.api.hitta.model.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
@@ -10,4 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 })
 public interface Address {
     String getType();
+
+    @JsonProperty("zipcode")
+    Long getZipcode();
 }

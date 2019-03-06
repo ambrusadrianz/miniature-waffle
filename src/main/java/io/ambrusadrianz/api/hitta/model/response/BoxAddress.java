@@ -28,9 +28,6 @@ public interface BoxAddress extends Address {
     @JsonProperty("cityPreposition")
     String getCityPreposition();
 
-    @JsonProperty("zipcode")
-    Long getZipcode();
-
     @Nullable
     @JsonProperty("box")
     Long getBox();

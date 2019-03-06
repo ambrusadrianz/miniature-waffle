@@ -6,20 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Value.Immutable
-public interface RestaurantDetailed {
-    String getId();
-
-    String getName();
-
+public interface RestaurantDetails {
     String getDescription();
 
     String getOpeningHours();
-
-    String getCuisine();
-
-    String getAddress();
-
-    Coordinate getLocation();
 
     String getContact();
 

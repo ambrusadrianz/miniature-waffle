@@ -1,9 +1,9 @@
 package io.ambrusadrianz.api.hitta;
 
 import io.ambrusadrianz.api.hitta.model.request.SearchRequest;
-import io.ambrusadrianz.api.hitta.model.response.HittaResponse;
-import io.reactivex.Single;
+import io.ambrusadrianz.api.hitta.model.response.Company;
+import io.reactivex.Flowable;
 
 public interface HittaClient {
-    Single<HittaResponse> search(SearchRequest searchRequest);
+    Flowable<Company> search(SearchRequest searchRequest);
 }

@@ -1,0 +1,15 @@
+bookatable:
+  dataCulture: GB
+  dataLanguage: en-GB
+
+hitta:
+  callerId: mizopoyay
+  apiKey: PVuU9i3itxOdzlP6IvwrYxnXow3dCizeoa1A5Vgc
+
+database:
+  port: 5432
+  host: localhost
+  database: miniature_waffle
+  user: waffle
+  password: password
+  poolMaxSize: 8

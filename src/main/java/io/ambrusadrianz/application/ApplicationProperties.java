@@ -4,9 +4,8 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.ambrusadrianz.api.bookatable.impl.BookatableProperties;
 import io.ambrusadrianz.api.hitta.impl.HittaProperties;
+import io.ambrusadrianz.data.DatabaseProperties;
 import org.immutables.value.Value;
-
-import java.util.List;
 
 @JsonSerialize(as = ImmutableApplicationProperties.class)
 @JsonDeserialize(as = ImmutableApplicationProperties.class)
@@ -16,5 +15,5 @@ public interface ApplicationProperties {
 
     HittaProperties getHitta();
 
-    List<String> getCitiesToScan();
+    DatabaseProperties getDatabase();
 }

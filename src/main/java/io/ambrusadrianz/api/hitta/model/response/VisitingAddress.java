@@ -20,15 +20,12 @@ public interface VisitingAddress extends Address {
     @JsonProperty("city")
     String getCity();
 
-    @JsonProperty("zipcode")
-    Long getZipcode();
-
     @JsonProperty("street")
     String getStreet();
 
     @Nullable
     @JsonProperty("number")
-    Long getNumber();
+    String getNumber();
 
     @Nullable
     @JsonProperty("entrance")
@@ -71,5 +68,5 @@ public interface VisitingAddress extends Address {
 
     @Nullable
     @JsonProperty("routeCoordinate")
-    Object getRouteCoordinate(); // TODO address this
+    RouteCoordinate getRouteCoordinate();
 }

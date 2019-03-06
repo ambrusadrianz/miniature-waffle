@@ -3,8 +3,10 @@ package io.ambrusadrianz.api.hitta.impl;
 
 import io.ambrusadrianz.api.hitta.HittaClient;
 import io.ambrusadrianz.api.hitta.model.request.SearchRequest;
-import io.ambrusadrianz.api.hitta.model.response.HittaResponse;
-import io.reactivex.Single;
+import io.ambrusadrianz.api.hitta.model.request.SearchType;
+import io.ambrusadrianz.api.hitta.model.response.Company;
+import io.ambrusadrianz.api.hitta.model.response.CompanyResponse;
+import io.reactivex.Flowable;
 import io.vertx.reactivex.core.buffer.Buffer;
 import io.vertx.reactivex.ext.web.client.HttpRequest;
 import io.vertx.reactivex.ext.web.client.WebClient;
@@ -12,6 +14,8 @@ import io.vertx.reactivex.ext.web.client.WebClient;
 public class HittaClientImpl implements HittaClient {
 
     private static final String SEARCH_PERSON_COMPANY = "/publicsearch/v1/";
+    private static final Integer PAGE_SIZE = 500;
+
 
     private final WebClient webClient;
     private final HittaHeaderFactory hittaHeaderFactory;
@@ -23,12 +27,8 @@ public class HittaClientImpl implements HittaClient {
     }
 
     @Override
-    public Single<HittaResponse> search(SearchRequest searchRequest) {
-        if (searchRequest.getSearchType() == null) {
-            throw new IllegalArgumentException("SearchType must not be null");
-        }
-
-        var searchType = searchRequest.getSearchType().toString().toLowerCase();
+    public Flowable<Company> search(SearchRequest searchRequest) {
+        var searchType = SearchType.COMPANIES.toString().toLowerCase();
         HttpRequest<Buffer> httpRequest = webClient.get(443, "api.hitta.se", SEARCH_PERSON_COMPANY + searchType);
 
         if (searchRequest.getWhat() != null) {
@@ -43,18 +43,14 @@ public class HittaClientImpl implements HittaClient {
             httpRequest.addQueryParam("geo.system", searchRequest.getGeoSystem().getValue());
         }
 
-        if (searchRequest.getPageNumber() != null && searchRequest.getPageSize() != null) {
-            httpRequest.addQueryParam("page.number", searchRequest.getPageNumber().toString());
-            httpRequest.addQueryParam("page.size", searchRequest.getPageSize().toString());
-        }
+        httpRequest.addQueryParam("page.number", "1");
+        httpRequest.addQueryParam("page.size", PAGE_SIZE.toString());
 
         httpRequest.headers().addAll(hittaHeaderFactory.buildHeaders());
         httpRequest.ssl(true);
 
         return httpRequest.rxSend()
-                .map(response -> {
-                    System.out.println(response.bodyAsJsonObject().getJsonObject("result").encodePrettily());
-                    return response.bodyAsJsonObject().getJsonObject("result").mapTo(HittaResponse.class);
-                });
+                .map(response -> response.bodyAsJsonObject().getJsonObject("result").getJsonObject("companies").mapTo(CompanyResponse.class))
+                .flatMapPublisher(companyResponse -> Flowable.fromIterable(companyResponse.getCompany()));
     }
 }

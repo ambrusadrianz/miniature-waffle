@@ -59,8 +59,3 @@ nb-configuration.xml
 ## OS X
 ##########################
 .DS_Store
-
-##########################
-## Miniature-Waffle
-##########################
-application.yml

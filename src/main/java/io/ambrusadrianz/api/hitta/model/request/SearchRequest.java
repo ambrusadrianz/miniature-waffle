@@ -5,9 +5,7 @@ import org.immutables.value.Value;
 import javax.annotation.Nullable;
 
 @Value.Immutable
-public interface SearchRequest extends PaginatedHittaRequest {
-    SearchType getSearchType();
-
+public interface SearchRequest {
     @Nullable
     String getWhat();
 

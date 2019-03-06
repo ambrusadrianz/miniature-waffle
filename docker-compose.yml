@@ -1,0 +1,19 @@
+version: "2"
+services:
+  flyway:
+    image: boxfuse/flyway:5
+    command: migrate
+    volumes:
+      - ./src/main/resources/sql:/flyway/sql
+      - ./:/flyway/conf
+    depends_on:
+      - "postgres"
+
+  postgres:
+    image: postgres:11
+    environment:
+      POSTGRES_USER: waffle
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: miniature_waffle
+    ports:
+      - 5432:5432

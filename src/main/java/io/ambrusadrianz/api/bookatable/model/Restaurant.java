@@ -2,6 +2,8 @@ package io.ambrusadrianz.api.bookatable.model;
 
 import org.immutables.value.Value;
 
+import java.util.Optional;
+
 @Value.Immutable
 public interface Restaurant {
     String getId();
@@ -10,13 +12,15 @@ public interface Restaurant {
 
     String getCuisine();
 
-    String getAddress();
+    Optional<String> getAddress();
 
-    Double getRating();
-
-    Long getReviewCount();
+    Optional<Integer> getPostalCode();
 
     Coordinate getLocation();
 
     String getImageUrl();
+
+    String getCity();
+
+    Optional<RestaurantDetails> getDetails();
 }

@@ -43,4 +43,12 @@ public interface Company {
     @Nullable
     @JsonProperty("attribute")
     List<Attribute> getAttribute();
+
+    @Nullable
+    @JsonProperty("product")
+    Object getProduct(); // TODO return
+
+    @Nullable
+    @JsonProperty("image")
+    Object getImage();
 }
